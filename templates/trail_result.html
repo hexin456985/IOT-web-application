@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
+  <link rel="stylesheet" href="https://a.amap.com/jsapi_demos/static/demo-center/css/demo-center.css"/>
+  <style>
+  html, body, #container {
+       height: 120%;
+       width: 100%;
+  }
+
+  .amap-icon img{
+        width: 40px;
+        height: 60px;
+  }
+  amap-marker-label{
+            border: 0;
+            background-color: transparent;
+        }
+
+
+   .info{
+            position: relative;
+            top: 0;
+            right: 0;
+            min-width: 0;
+            width: 40px;
+            height: 60px;
+            color: rgb(255,255,255);
+            font-size: 50px;
+   }
+
+ .button1 {
+    -webkit-transition-duration: 0.4s;
+    transition-duration: 0.4s;
+    padding: 3px 4px;
+    text-align: center;
+    background-color: rgb(251, 205, 121);
+    color: white;
+    border: 2px solid rgb(248, 170, 27);
+    border-radius:5px;
+   }
+    .button1:hover {
+    background-color: rgb(248, 170, 27);
+    color: white;
+   }
+ </style>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+
+  <title>Gundam Versus Resource Website</title>
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+  <!-- Google CSS -->
+  <link href='https://fonts.googleapis.com/css?family=Lato:300,400,700' rel='stylesheet' type='text/css'>
+
+  <!-- mainMenu CSS -->
+   <link href="../static/main.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+        <nav class="navbar fixed-top navbar-expand-lg navbar-dark" id="nav1">
+
+                <a class="navbar-brand" href="https://isaiah6208.github.io/mainMenuDemo/">
+                    <img class="exiaLogo" src="../static/zju.png"  alt="">
+                </a>
+
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                  <ul class="navbar-nav mr-auto">
+                    <form method="get" action='/link_main'>
+                        <button class="button1">主页</button>
+                    </form>
+                    <form method="get" action='/link_data'>
+                    <button class="button1">设备查询</button>
+                    </form>
+                    <form method="get" action='/link_device'>
+                      <button class="button1">设备修改</button>
+                    </form>
+                    <!-- Have links to YouTube accounts here. -->
+                    <form method="get" action='/link_trail'>
+                        <button class="button1">路径轨迹</button>
+                    </form>
+                    <form method="get" action='/link_login'>
+                        <button class="button1">重新登录</button>
+                    </form>
+                    <form method="get" action='/link_register'>
+                        <button class="button1">重新注册</button>
+                    </form>
+                  </ul>
+                </div>
+              </nav>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="validator.js"></script>
+    <script src="contact.js"></script>
+        <div id="container"></div>
+
+</div>
+    <div class="info">
+    <div id="centerCoord"></div>
+    <div id="tips"></div>
+</div>
+    <script type="text/javascript"
+        src="https://webapi.amap.com/maps?v=1.4.15&key=f2d41d556dae4235ca15487ab1afd852"></script>
+    <script type="text/javascript">
+    var num = '{{ num|tojson }}'
+    var alert = '{{ alert|tojson }}'
+    var dlat = '{{ dlat|tojson }}'
+    var dlng = '{{ dlng|tojson }}'
+    var pos = []
+    var ltarr = []
+    var lnarr = []
+
+    var lt = '{{ dlat [0]}}';
+    var ln = '{{ dlng [0]}}';
+    var lt1 = '{{ dlat [1]}}';
+    var ln1 = '{{ dlng [1]}}';
+    var lt2 = '{{ dlat [2]}}';
+    var ln2 = '{{ dlng [2]}}';
+    var lt3 = '{{ dlat [3]}}';
+    var ln3 = '{{ dlng [3]}}';
+    var lt4 = '{{ dlat [4]}}';
+    var ln4 = '{{ dlng [4]}}';
+    var al = '{{ alert [0]}}';
+    var al1 = '{{ alert [1]}}';
+    var al2 = '{{ alert [2]}}';
+    var al3 = '{{ alert [3]}}';
+    var al4 = '{{ alert [4]}}';
+
+    var map = new AMap.Map('container', {
+        resizeEnable: true,
+        center: [120.15, 30.25],
+        zoom: 13
+    });
+
+    map.clearMap();  // 清除地图覆盖物
+
+    if (num == 1){
+    var markers = [{
+        icon: '//a.amap.com/jsapi_demos/static/demo-center/icons/poi-marker-1.png',
+        position: [ln, lt]
+    }];
+
+    var i = 0;
+    // 添加一些分布不均的点到地图上,地图上添加三个点标记，作为参照
+    markers.forEach(function(marker) {
+        var mk = new AMap.Marker({
+            map: map,
+            icon: marker.icon,
+            offset: new AMap.Pixel(20, 20),
+            position: [marker.position[0], marker.position[1]],
+            offset: new AMap.Pixel(-13, -30)
+        });
+        mk.setMap(map);
+
+        if(i==0 && al==1){
+            mk.setLabel({
+            offset: new AMap.Pixel(10, 10),  //设置文本标注偏移量
+            content: "<div class='inf'>警告值为1！</div>", //设置文本标注内容
+            direction: 'right' //设置文本标注方位
+        });
+        }
+        i++;
+    });
+    }
+
+
+    if (num == 2){
+    var markers = [{
+        icon: '//a.amap.com/jsapi_demos/static/demo-center/icons/poi-marker-1.png',
+        position: [ln, lt]
+    }, {
+        icon: '//a.amap.com/jsapi_demos/static/demo-center/icons/poi-marker-2.png',
+        position: [ln1, lt1]
+    }];
+
+    var i = 0;
+    // 添加一些分布不均的点到地图上,地图上添加三个点标记，作为参照
+    markers.forEach(function(marker) {
+        var mk = new AMap.Marker({
+            map: map,
+            icon: marker.icon,
+            offset: new AMap.Pixel(20, 20),
+            position: [marker.position[0], marker.position[1]],
+            offset: new AMap.Pixel(-13, -30)
+        });
+        mk.setMap(map);
+
+        if(i==0 && al==1){
+            mk.setLabel({
+            offset: new AMap.Pixel(10, 10),  //设置文本标注偏移量
+            content: "<div class='inf'>警告值为1！</div>", //设置文本标注内容
+            direction: 'right' //设置文本标注方位
+        });
+        }
+        if(i==1 && al1==1){
+            mk.setLabel({
+            offset: new AMap.Pixel(10, 10),  //设置文本标注偏移量
+            content: "<div class='inf'>警告值为1！</div>", //设置文本标注内容
+            direction: 'right' //设置文本标注方位
+        });
+        }
+        i++;
+    });
+    }
+
+    if (num == 3){
+    var markers = [{
+        icon: '//a.amap.com/jsapi_demos/static/demo-center/icons/poi-marker-1.png',
+        position: [ln, lt]
+    }, {
+        icon: '//a.amap.com/jsapi_demos/static/demo-center/icons/poi-marker-2.png',
+        position: [ln1, lt1]
+    }, {
+        icon: '//a.amap.com/jsapi_demos/static/demo-center/icons/poi-marker-3.png',
+        position: [ln2, lt2]
+    }];
+
+    var i = 0;
+    // 添加一些分布不均的点到地图上,地图上添加三个点标记，作为参照
+    markers.forEach(function(marker) {
+        var mk = new AMap.Marker({
+            map: map,
+            icon: marker.icon,
+            offset: new AMap.Pixel(20, 20),
+            position: [marker.position[0], marker.position[1]],
+            offset: new AMap.Pixel(-13, -30)
+        });
+        mk.setMap(map);
+
+        if(i==0 && al==1){
+            mk.setLabel({
+            offset: new AMap.Pixel(10, 10),  //设置文本标注偏移量
+            content: "<div class='inf'>警告值为1！</div>", //设置文本标注内容
+            direction: 'right' //设置文本标注方位
+        });
+        }
+        if(i==1 && al1==1){
+            mk.setLabel({
+            offset: new AMap.Pixel(10, 10),  //设置文本标注偏移量
+            content: "<div class='inf'>警告值为1！</div>", //设置文本标注内容
+            direction: 'right' //设置文本标注方位
+        });
+        }
+        if(i==2 && al2==1){
+            mk.setLabel({
+            offset: new AMap.Pixel(10, 10),  //设置文本标注偏移量
+            content: "<div class='inf'>警告值为1！</div>", //设置文本标注内容
+            direction: 'right' //设置文本标注方位
+        });
+        }
+        i++;
+    });
+    }
+
+    if (num == 4){
+    var markers = [{
+        icon: '//a.amap.com/jsapi_demos/static/demo-center/icons/poi-marker-1.png',
+        position: [ln, lt]
+    }, {
+        icon: '//a.amap.com/jsapi_demos/static/demo-center/icons/poi-marker-2.png',
+        position: [ln1, lt1]
+    }, {
+        icon: '//a.amap.com/jsapi_demos/static/demo-center/icons/poi-marker-3.png',
+        position: [ln2, lt2]
+    }, {
+        icon: '//a.amap.com/jsapi_demos/static/demo-center/icons/poi-marker-4.png',
+        position: [ln3, lt3]
+    }];
+
+    var i = 0;
+    // 添加一些分布不均的点到地图上,地图上添加三个点标记，作为参照
+    markers.forEach(function(marker) {
+        var mk = new AMap.Marker({
+            map: map,
+            icon: marker.icon,
+            offset: new AMap.Pixel(20, 20),
+            position: [marker.position[0], marker.position[1]],
+            offset: new AMap.Pixel(-13, -30)
+        });
+        mk.setMap(map);
+
+        if(i==0 && al==1){
+            mk.setLabel({
+            offset: new AMap.Pixel(10, 10),  //设置文本标注偏移量
+            content: "<div class='inf'>警告值为1！</div>", //设置文本标注内容
+            direction: 'right' //设置文本标注方位
+        });
+        }
+        if(i==1 && al1==1){
+            mk.setLabel({
+            offset: new AMap.Pixel(10, 10),  //设置文本标注偏移量
+            content: "<div class='inf'>警告值为1！</div>", //设置文本标注内容
+            direction: 'right' //设置文本标注方位
+        });
+        }
+        if(i==2 && al2==1){
+            mk.setLabel({
+            offset: new AMap.Pixel(10, 10),  //设置文本标注偏移量
+            content: "<div class='inf'>警告值为1！</div>", //设置文本标注内容
+            direction: 'right' //设置文本标注方位
+        });
+        }
+        if(i==3 && al3==1){
+            mk.setLabel({
+            offset: new AMap.Pixel(10, 10),  //设置文本标注偏移量
+            content: "<div class='inf'>警告值为1！</div>", //设置文本标注内容
+            direction: 'right' //设置文本标注方位
+        });
+        }
+        i++;
+    });
+    }
+
+    if (num >= 5){
+    var markers = [{
+        icon: '//a.amap.com/jsapi_demos/static/demo-center/icons/poi-marker-1.png',
+        position: [ln, lt]
+    }, {
+        icon: '//a.amap.com/jsapi_demos/static/demo-center/icons/poi-marker-2.png',
+        position: [ln1, lt1]
+    }, {
+        icon: '//a.amap.com/jsapi_demos/static/demo-center/icons/poi-marker-3.png',
+        position: [ln2, lt2]
+    }, {
+        icon: '//a.amap.com/jsapi_demos/static/demo-center/icons/poi-marker-4.png',
+        position: [ln3, lt3]
+    }, {
+        icon: '//a.amap.com/jsapi_demos/static/demo-center/icons/poi-marker-5.png',
+        position: [ln4, lt4]
+    }];
+
+    var i = 0;
+    // 添加一些分布不均的点到地图上,地图上添加三个点标记，作为参照
+    markers.forEach(function(marker) {
+        var mk = new AMap.Marker({
+            map: map,
+            icon: marker.icon,
+            offset: new AMap.Pixel(20, 20),
+            position: [marker.position[0], marker.position[1]],
+            offset: new AMap.Pixel(-13, -30)
+        });
+        mk.setMap(map);
+
+        if(i==0 && al==1){
+            mk.setLabel({
+            offset: new AMap.Pixel(10, 10),  //设置文本标注偏移量
+            content: "<div class='inf'>警告值为1！</div>", //设置文本标注内容
+            direction: 'right' //设置文本标注方位
+        });
+        }
+        if(i==1 && al1==1){
+            mk.setLabel({
+            offset: new AMap.Pixel(10, 10),  //设置文本标注偏移量
+            content: "<div class='inf'>警告值为1！</div>", //设置文本标注内容
+            direction: 'right' //设置文本标注方位
+        });
+        }
+        if(i==2 && al2==1){
+            mk.setLabel({
+            offset: new AMap.Pixel(10, 10),  //设置文本标注偏移量
+            content: "<div class='inf'>警告值为1！</div>", //设置文本标注内容
+            direction: 'right' //设置文本标注方位
+        });
+        }
+        if(i==3 && al3==1){
+            mk.setLabel({
+            offset: new AMap.Pixel(10, 10),  //设置文本标注偏移量
+            content: "<div class='inf'>警告值为1！</div>", //设置文本标注内容
+            direction: 'right' //设置文本标注方位
+        });
+        }
+        if(i==4 && al4==1){
+            mk.setLabel({
+            offset: new AMap.Pixel(10, 10),  //设置文本标注偏移量
+            content: "<div class='inf'>警告值为1！</div>", //设置文本标注内容
+            direction: 'right' //设置文本标注方位
+        });
+        }
+        i++;
+    });
+    }
+    var center = map.getCenter();
+</script>
+    </body>
+</html>
+
+

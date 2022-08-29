@@ -1,0 +1,52 @@
+ #nav1
+  {
+      background-color:rgb(255, 153, 102);  /*whichever you want*/
+      opacity: 1.0;           /*0.5 determines transparency value*/
+      filter:(opacity=80);
+  }
+  img.exiaLogo
+  {
+    width: 50px;
+    height: 50px;
+  }
+  h1.mainTitle
+  {
+    font-family: '等线';
+    text-align: center;
+    color: white;
+    font-size: 100px;
+    padding-top: 150px;
+    text-transform: uppercase;
+    text-shadow:5px 5px 10px rgba(206, 100, 100, 0.863);
+  }
+  div.info
+  {
+      font-family: "等线";
+      font-size: 80px;
+      color: white;
+      text-align: center;
+      text-shadow:2px 2px 2px white;
+  }
+  span.catchPhrase
+  {
+      color: red;
+      text-shadow:2px 2px 2px white;
+  }
+  body
+  {
+    background-color: #313131;
+    background-image: url("main.jpg");
+    background-blend-mode: overlay;
+    background-attachment: fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    padding-bottom: 100px;
+  }
+
+  /* Bootstrap CSS */
+  ul.navbar-nav
+  {
+    font-size: 30px;
+  }

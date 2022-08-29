@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <style>
+ .button1 {
+    -webkit-transition-duration: 0.4s;
+    transition-duration: 0.4s;
+    padding: 3px 4px;
+    text-align: center;
+    background-color: rgb(251, 205, 121);
+    color: white;
+    border: 2px solid rgb(248, 170, 27);
+    border-radius:5px;
+   }
+    .button1:hover {
+    background-color: rgb(248, 170, 27);
+    color: white;
+   }
+
+    #datatable {
+            top: 0%;
+            left: 0%;
+            width=0%
+            height =0%
+        }
+    td,
+    th {
+        border: 1px solid #ccc;
+        padding: 4px 20px;
+    }
+    #datatable2 {
+        top: 0%;
+        left: 0%;
+    }
+    td,th {
+        border: 1px solid #ccc;
+        padding: 4px 20px;
+    }
+
+    #container {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        margin-left: -830px;
+        margin-top: -280px;
+    }
+
+    #container2 {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        margin-left: 180px;
+        margin-top: -280px;
+    }
+ </style>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+
+  <title>Gundam Versus Resource Website</title>
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+  <!-- Google CSS -->
+  <link href='https://fonts.googleapis.com/css?family=Lato:300,400,700' rel='stylesheet' type='text/css'>
+
+  <!-- mainMenu CSS -->
+   <link href="../static/main.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.highcharts.com.cn/highcharts/highcharts.js"></script>
+    <script src="https://cdn.highcharts.com.cn/highcharts/modules/exporting.js"></script>
+    <script src="https://cdn.highcharts.com.cn/highcharts/modules/data.js"></script>
+    <script src="https://img.hcharts.cn/highcharts-plugins/highcharts-zh_CN.js"></script>
+</head>
+<body>
+        <nav class="navbar fixed-top navbar-expand-lg navbar-dark" id="nav1">
+
+                <a class="navbar-brand" href="https://isaiah6208.github.io/mainMenuDemo/">
+                    <img class="exiaLogo" src="../static/zju.png"  alt="">
+                </a>
+
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                  <ul class="navbar-nav mr-auto">
+                    <form method="get" action='/link_main'>
+                        <button class="button1">主页</button>
+                    </form>
+                    <form method="get" action='/link_data'>
+                    <button class="button1">设备查询</button>
+                    </form>
+                    <form method="get" action='/link_device'>
+                      <button class="button1">设备修改</button>
+                    </form>
+                    <!-- Have links to YouTube accounts here. -->
+                    <form method="get" action='/link_trail'>
+                        <button class="button1">路径轨迹</button>
+                    </form>
+                    <form method="get" action='/link_login'>
+                        <button class="button1">重新登录</button>
+                    </form>
+                    <form method="get" action='/link_register'>
+                        <button class="button1">重新注册</button>
+                    </form>
+                  </ul>
+                </div>
+              </nav>
+
+    <h1 class="mainTitle text-top" ><b>物联网应用网站 <span class="catchPhrase"></span></b></h1>
+
+    <table id="datatable">
+        <thead>
+            <tr style="display:none">
+                <th></th>
+                {% for i in all %}
+                <th>{{i[0]}}</th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            <tr style="display:none">
+                <th>数据量</th>
+                {% for j in data %}
+                <td>{{j}}</td>
+                {% endfor %}
+            </tr>
+        </tbody>
+    </table>
+
+    <table id="datatable2">
+        <thead>
+                <tr style="display:none">
+                    <th></th>
+                    <th>现有设备</th>
+                    <th>在线设备</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr style="display:none">
+                    <th>设备总量</th>
+                    {% for i in devnum %}
+                    <td>{{i}}</td>
+                    {% endfor %}
+                </tr>
+            </tbody>
+    </table>
+
+    <div id="container" style="min-width: 850px; height: 600px;"></div>
+    <script>
+        var chart = Highcharts.chart('container', {
+            data: {
+                table: 'datatable'
+            },
+            chart: {
+                type: 'column'
+            },
+            title: {
+                text: '设备数据接收总量'
+            },
+            yAxis: {
+                allowDecimals: false,
+                title: {
+                    text: '个',
+                    rotation: 0
+                }
+            },
+            tooltip: {
+                formatter: function() {
+                    return '<b>' + this.series.name + '</b><br/>' + this.point.y + '个' + this.point.name.toLowerCase();
+                }
+            }
+        });
+    </script>
+
+    <div id="container2" style="min-width: 500px; height: 600px;"></div>
+    <script>
+        var chart = Highcharts.chart('container2', {
+            data: {
+            table: 'datatable2'
+        },
+        chart: {
+            type: 'column'
+        },
+        title: {
+            text: '设备总量 vs 在线设备总量'
+        },
+        yAxis: {
+            allowDecimals: false,
+            title: {
+                text: '个',
+                rotation: 0
+        }
+        },
+        tooltip: {
+            formatter: function () {
+                return '<b>' + this.series.name + '</b><br/>' +
+                   this.point.y + ' 个' + this.point.name.toLowerCase();
+            }
+        }
+    });
+    </script>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="validator.js"></script>
+    <script src="contact.js"></script>
+</body>
+</html>
